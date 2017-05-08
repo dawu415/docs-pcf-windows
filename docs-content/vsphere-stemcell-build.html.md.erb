@@ -17,12 +17,64 @@ This process is based on the fact that the operator is maintaining an updated te
   <th>Notes</th>
 </tr>
 <tr>
-  <td>[ovftool](https://www.vmware.com/support/developer/ovf/)</td>
-  <td>Please make sure `ovftool` command is available from your command line.
-  It is installed by default in `C:\Program Files\VMware\VMware OVF Tool`.</td>
+  <td><a href="https://www.vmware.com/support/developer/ovf">ovftool</a></td>
+  <td>Please make sure <code>ovftool</code>command is available from your command line.
+  It is installed by default in <code>C:\Program Files\VMware\VMware OVF Tool</code>.</td>
 </tr>
 <tr>
-  <td></td>
+  <td><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2">Windows ISO</a></td>
+  <td>You can also use a custom base image.</td>
+</tr>
+<tr>
+<td><a href="https://golang.org/dl/">Golang</a></td>
+<td>Latest 1.8.x compiler</td>
+</tr>
+<tr>
+<td><a href="https://www.ruby-lang.org/en/downloads/">Ruby</a></td>
+<td>Latest 2.3.x version</td>
+</tr>
+<tr>
+<td>VMware Workstation, or VMware Fusion, or access to a vSphere account</td>
+<td></td>
+</tr>
+<tr>
+  <td><a href="https://git-scm.com/downloads">git</a></td>
   <td></td>
 </tr>
+<tr>
+<td><a href="https://greenhouse.ci.cf-app.com/teams/main/pipelines/tar/resources/s3-bucket">[tar.exe]</a></td>
+<td>If on Windows</td>
+</tr>
+<tr>
+<td><a href="https://packages.vmware.com/tools/esx/6.0latest/windows/x64/VMware-tools-10.0.9-3917699-x86_64.exe">VMware Tools</a></td>
+<td></td>
+</tr>
 </table>
+
+<p class="note"><strong>Note</strong>
+These are instructions for installing Windows from a Windows installation disk ISO. You may adapt the instructions if you are starting from some different Windows image. Make sure that your image has <b>Hardware Compatibility</b> set to version 9, and that it has VMware tools installed.
+</p>
+
+## Step 1: Create base VM for stemcell
+
+###For VMware Fusion:
+1. Select **File** and then **New**
+1. Select **Installation Method: Create a custom virtual machine**
+1. Choose Operating System: Microsoft Windows => Windows Server 2012
+1. hoose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
+1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
+1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
+	* In the  **Removable Devices** row, select **Camera**, and then Remove device
+	* In the  **Removable Devices** row, select **CD/DVD** and then check the 'Connect CD/DVD Drive' box
+	* In the **This drive is configured to use the following:** section, select "Choose a disc or disc image" and then input your base ISO
+	* In the **Advanced Options** section select **Bus type** and then **SCSI**, which is required for Hardware Version 9
+	* In the **Other** row, select **Compatibility** then  **Advanced Options**, **Use Hardware Version number 9**, and then click **Apply**.
+	* In **Processor & Memory**, located within the **System Settings** row, keep the default settings for cores, processors, and memory.
+1. Start VM 
+	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation)
+1. Install VMware Tools
+	1. Select **Virtual Machine**, select  **Install VMWare Tools**, **Complete Installation**, and follow the installation instructions. 
+	1. Restart the VM to finish the install.
+1. Shutdown the VM
+1. 
+

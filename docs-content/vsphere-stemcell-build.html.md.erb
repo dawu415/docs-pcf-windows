@@ -60,7 +60,7 @@ These are instructions for installing Windows from a Windows installation disk I
 1. Select **File** and then **New**.
 1. Select **Installation Method: Create a custom virtual machine**.
 1. Choose Operating System: Microsoft Windows => Windows Server 2012.
-1. hoose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
+1. Choose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
 1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
 1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
 	* In the  **Removable Devices** row, select **Camera**, and then Remove device.
@@ -94,7 +94,34 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Keep default settings for number of cores and processors and then click **Next**.
 	1. Keep default settings for memory and then click **Next**.
 	1. Select the correct **Network Type (NAT)** and then click **Next**.
-	1. Create a new virtual disk. 
+	1. Create a new virtual disk and then click **Next**.
+	1. Select **Customize Hardware**.
+		1. Select **New CD/DVD**.
+		1. Select **Use ISO Image file** and browse for the correct ISO.
+1. Power on the new VM and install Windows
+	1. Select server with GUI
+	1. Select **Custom Installation**
+	1. Continue the installation and select a password for the Admin user
+1. After the VM has started successfully, right-click the machine name in Workstation and Install VMware Tools
+1. Shut down the VM
+1. Remove the ISO file from the CD/DVD drive
+	1. Select the settings for the VM
+	1. Select **CD/DVD Remove**
+	1. Add **CD/DVD Drive**
+	1. Select **Use Physical drive** and **Auto Detect**
+	1. Deselect **Connect at power on**
+	1. Select **Ok**
+1. Start the new VM
+
+###For vCenter
+1. If you are using an ISO, upload it to your datastore.
+	1. Select **vCenter** and then **Datastores**.
+	1. Select your desired datastore and directory.
+	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
+1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
+1. Create a new virtual machine for this purpose (if you are using an existing template, select the creation type Deploy from template and select the existing template):
+1. In Select compatibility ensure that you choose **ESXi 5.5 and later**.
+1. 
 
 
 

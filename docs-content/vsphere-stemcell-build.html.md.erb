@@ -1,0 +1,28 @@
+---
+title: Creating a vSphere Stemcell Manually
+owner: Greenhouse
+---
+
+<strong><%= modified_date %></strong>
+
+This topic discusses how to create a vSphere stemcell manually. In vSphere, customers must build their own Stemcells in order to use their on-premise deployments. This document describes using VMware Workstation, VMware Fusion, and vCenter to install the BOSH dependencies and then create a .tgz file that can be uploaded to your BOSH director and used with Cloud Foundry.
+
+<p class="note"><strong>Note</strong>
+This process is based on the fact that the operator is maintaining an updated template with all Windows recommended security updates. Every release of this repository includes an updates.txt file that lists the currently recommended KB Microsoft hotfixes to have installed. You can determine if your image needs updates by creating a VM with the image and going to control panel. If any critical or important updates are available we recommend installing updates first, then rebuilding the stemcell.
+</p>
+
+<table>
+<tr>
+  <th>Component</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>[ovftool](https://www.vmware.com/support/developer/ovf/)</td>
+  <td>Please make sure `ovftool` command is available from your command line.
+  It is installed by default in `C:\Program Files\VMware\VMware OVF Tool`.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</table>

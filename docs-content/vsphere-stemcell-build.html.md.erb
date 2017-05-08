@@ -56,25 +56,46 @@ These are instructions for installing Windows from a Windows installation disk I
 </p>
 
 ## Step 1: Create base VM for stemcell
-
-###For VMware Fusion:
-1. Select **File** and then **New**
-1. Select **Installation Method: Create a custom virtual machine**
-1. Choose Operating System: Microsoft Windows => Windows Server 2012
+###For VMware Fusion
+1. Select **File** and then **New**.
+1. Select **Installation Method: Create a custom virtual machine**.
+1. Choose Operating System: Microsoft Windows => Windows Server 2012.
 1. hoose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
 1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
 1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
-	* In the  **Removable Devices** row, select **Camera**, and then Remove device
-	* In the  **Removable Devices** row, select **CD/DVD** and then check the 'Connect CD/DVD Drive' box
-	* In the **This drive is configured to use the following:** section, select "Choose a disc or disc image" and then input your base ISO
-	* In the **Advanced Options** section select **Bus type** and then **SCSI**, which is required for Hardware Version 9
+	* In the  **Removable Devices** row, select **Camera**, and then Remove device.
+	* In the  **Removable Devices** row, select **CD/DVD** and then check the 'Connect CD/DVD Drive' box.
+	* In the **This drive is configured to use the following:** section, select "Choose a disc or disc image" and then input your base ISO.
+	* In the **Advanced Options** section select **Bus type** and then **SCSI**, which is required for Hardware Version 9.
 	* In the **Other** row, select **Compatibility** then  **Advanced Options**, **Use Hardware Version number 9**, and then click **Apply**.
 	* In **Processor & Memory**, located within the **System Settings** row, keep the default settings for cores, processors, and memory.
 1. Start VM 
-	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation)
+	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation).
 1. Install VMware Tools
 	1. Select **Virtual Machine**, select  **Install VMWare Tools**, **Complete Installation**, and follow the installation instructions. 
 	1. Restart the VM to finish the install.
 1. Shutdown the VM
-1. 
+1. In the **Settings** window of the new VM, select **CD/DVD**, within the the **Removable Devices** row.
+	1. Select **Autodetect**. This effectively removes the ISO.
+	1. Deselect **Connect CD/DVD Drive**.
+	1. Select **Advanced Options**, and switch **Bus type** to **IDE**.
+1. Turn on and then turn off the VM. This is required to apply changes to CD/DVD.
+1. In the **Other** row, select **Compatibility** then  **Advanced Options** and ensure that **Hardware Version** is set to **9**.
+
+###For VMware Workstation
+1. Install VMware workstation.
+1. Create new Virtual Machine
+	1. Select **Custom Advanced** and then click **Next**.
+	1. Select **Workstation 9.x Compatibility** and then click **Next**.
+	1. Select **I will install operating system later** and then click **Next**.
+	1. Select **Microsoft Windows** and then the **Windows 2012R2** version and then click **Next**.
+	1. Choose a name for your virtual machine and then click **Next**.
+	1. Select **BIOS** and click **Next**.
+	1. Keep default settings for number of cores and processors and then click **Next**.
+	1. Keep default settings for memory and then click **Next**.
+	1. Select the correct **Network Type (NAT)** and then click **Next**.
+	1. Create a new virtual disk. 
+
+
+
 

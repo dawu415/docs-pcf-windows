@@ -119,9 +119,21 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select your desired datastore and directory.
 	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
 1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
-1. Create a new virtual machine for this purpose (if you are using an existing template, select the creation type Deploy from template and select the existing template):
-1. In Select compatibility ensure that you choose **ESXi 5.5 and later**.
-1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012 as Guest OS version
+1. Create a new virtual machine for this purpose [//]: # "What purpose?" (if you are using an existing template, select the **creation type**: **Deploy from template** and select the existing template) and click next.
+1. [//]: # "Select a name and folder?"
+1. [//]: # "Resource?"
+1. [//]: # "Storage?"
+1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click next.
+1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click next. 
+1. In **Customize Hardware**
+	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
+	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
+	1. Click Browse and select the ISO you uploaded to your datastore.
+1. After creating VM, click **Power On** in the **Action**s tab for your VM, then install Windows:
+	1. Select server with GUI.
+	1. Select custom installation
+	1. Complete the installation process and add **select a password** for Administrator user.
+1. In the vCenter web client, "Install VMware Tools" in the VM Summary tab.
 
 
 

@@ -176,3 +176,37 @@ If you do not have Ruby and Golang to package the BOSH Agent, skip the first ste
 1. On your host _not_, not in the VM for your stemcell, run `rake package:agent`
 1. Transfer `build/agent.zip` you built in the previous step, or the `agent.zip` downloaded from the releases page to your Windows VM.
 1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath <PATH_TO_agent.zip>`
+
+## Step 6: Sysprep and optionally apply security policies
+
+If you would like to apply the recommended local security policy:
+1. Download lgpo.exe to the Windows VM you are provisioning and 
+1. save `lgpo.exe` to `C:\Windows\lgpo.exe`
+1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
+
+This will power off the VM. Do not turn the VM back on before exporting
+
+Or:
+
+If you would like to simply sysprep the image without applying the recommended security policies use the -SkipLGPO flag.
+
+1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
+
+This will power off the VM. Do not turn the VM back on before exporting.
+
+## Step 7: Export image to OVA format
+If you are using VMware Fusion or Workstation, after powering off the VM locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. Otherwise simply right click on the VM to find its location.
+Convert the vmx file into an OVA archive using **ovftool**:
+
+`ovftool <PATH_TO_VMX_FILE> image.ova`
+
+
+## Step 8: Convert OVA file to a BOSH Stemcell
+The format of the rake task is `rake package:vsphere_ova[<path_to_ova>,<path_to_stemcell_destination_directory>,stemcell_version]`
+
+For example:
+<pre class="terminal">rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
+
+The OVA filename and destination path cannot currently have spaces in them (this will be fixed).
+
+

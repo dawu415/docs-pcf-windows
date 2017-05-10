@@ -133,9 +133,26 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select server with GUI.
 	1. Select custom installation
 	1. Complete the installation process and add **select a password** for Administrator user.
-1. In the vCenter web client, "Install VMware Tools" in the VM Summary tab.
+1. In the vCenter web client, "Install VMware Tools" in the **VM Summary** tab.
 
+## Step 2: Package BOSH PSModules
 
+PS Modules are provided as a package in releases on Github. We recommend using that package. If you need to build from source, then proceed to the Install BOSH PSModules section.
 
+To package BOSH PSModules:
 
+- Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo </a> on your host, _not_, in the VM for your stemcell, and expand the submodules:
+
+NOTE: Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules.
+NOTE: On Windows you MUST clone straight into C:\\, or the git clone and submodule update will fail due to file path lengths.
+
+<pre class="terminal">
+$ git clone https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
+$ cd bosh-windows-stemcell-builder
+$ git checkout <DESIRED_STEMCELL_VERSION_TAG>
+$ git submodule update --init --recursive
+$ gem install bundler
+$ bundle install
+$ rake package:psmodules
+</pre>
 

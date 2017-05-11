@@ -42,7 +42,7 @@ This process is based on the fact that the operator is maintaining an updated te
   <td></td>
 </tr>
 <tr>
-<td><a href="https://greenhouse.ci.cf-app.com/teams/main/pipelines/tar/resources/s3-bucket">[tar.exe]</a></td>
+<td><a href="https://greenhouse.ci.cf-app.com/teams/main/pipelines/tar/resources/s3-bucket">tar.exe</a></td>
 <td>If on Windows</td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
 	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
 	1. Click Browse and select the ISO you uploaded to your datastore.
-1. After creating VM, click **Power On** in the **Action**s tab for your VM, then install Windows:
+1. After creating VM, click **Power On** in the **Actions** tab for your VM, then install Windows:
 	1. Select server with GUI.
 	1. Select custom installation
 	1. Complete the installation process and add **select a password** for Administrator user.
@@ -141,10 +141,10 @@ PS Modules are provided as a package in releases on Github. We recommend using t
 
 To package BOSH PSModules:
 
-- Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo </a> on your host, _not_, in the VM for your stemcell, and expand the submodules:
+- Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not, in the VM for your stemcell, and expand the submodules:
 
 NOTE: Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules.
-NOTE: On Windows you MUST clone straight into C:\\, or the git clone and submodule update will fail due to file path lengths.
+NOTE: On Windows you MUST clone straight into `C:\\`, or the git clone and submodule update will fail due to file path lengths.
 
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
@@ -158,8 +158,8 @@ $ rake package:psmodules
 
 ## Step 3: Install BOSH PSModules
 
-1. Transfer the build/bosh-psmodules.zip you built in Step 2, or the bosh-psmodules.zip downloaded from the releases page to your Windows VM (Note: you can just drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion)
-1. Unzip the zip file and copy the BOSH.* folders to C:\Program Files\WindowsPowerShell\Modules
+1. Transfer the `build/bosh-psmodules.zip` you built in Step 2, or the `bosh-psmodules.zip` downloaded from the releases page to your Windows VM (Note: you can just drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion)
+1. Unzip the zip file and copy the BOSH.* folders to `C:\Program Files\WindowsPowerShell\Modules`
 
 
 ## Step 4: Install CloudFoundry Cell requirements
@@ -167,36 +167,42 @@ $ rake package:psmodules
 1. On your windows VM, start `powershell` and run `Install-CFFeatures`
 1. Apply the recommended ingress and service configuration:
 	1. Run the following powershell command `Protect-CFCell`
-Note: To make sure you have the proper .NET Framework version(s) installed, follow this guide (Fill in with guide)
+
+
+To make sure you have the proper .NET Framework version(s) installed, follow this guide (Fill in with guide)
 
 ## Step 5: Build & Install BOSH Agent
 
 If you do not have Ruby and Golang to package the BOSH Agent, skip the first step below and download the `agent.zip` attached in your desired release.
 
-1. On your host _not_, not in the VM for your stemcell, run `rake package:agent`
+1. On your host, not in the VM for your stemcell, run `rake package:agent`
 1. Transfer `build/agent.zip` you built in the previous step, or the `agent.zip` downloaded from the releases page to your Windows VM.
 1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath <PATH_TO_agent.zip>`
 
 ## Step 6: Sysprep and optionally apply security policies
 
 If you would like to apply the recommended local security policy:
-1. Download lgpo.exe to the Windows VM you are provisioning and 
-1. save `lgpo.exe` to `C:\Windows\lgpo.exe`
-1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
 
-This will power off the VM. Do not turn the VM back on before exporting
+1. Download `lgpo.exe` to the Windows VM you are provisioning and 
+1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`
+1. Run the following powershell command 
+`Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
+
+This will power off the VM. Do not turn the VM back on before exporting.
 
 Or:
 
-If you would like to simply sysprep the image without applying the recommended security policies use the -SkipLGPO flag.
+If you would like to simply sysprep the image without applying the recommended security policies use the `-SkipLGPO` flag.
 
 1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
 
 This will power off the VM. Do not turn the VM back on before exporting.
 
 ## Step 7: Export image to OVA format
-If you are using VMware Fusion or Workstation, after powering off the VM locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. Otherwise simply right click on the VM to find its location.
-Convert the vmx file into an OVA archive using **ovftool**:
+
+If you are using VMware Fusion or Workstation, after powering off the VM, locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. Otherwise simply right click on the VM to find its location.
+
+Convert the `.vmx` file into an OVA archive using **ovftool**:
 
 `ovftool <PATH_TO_VMX_FILE> image.ova`
 
@@ -205,7 +211,7 @@ Convert the vmx file into an OVA archive using **ovftool**:
 The format of the rake task is `rake package:vsphere_ova[<path_to_ova>,<path_to_stemcell_destination_directory>,stemcell_version]`
 
 For example:
-<pre class="terminal">rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
+<pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
 
 The OVA filename and destination path cannot currently have spaces in them (this will be fixed).
 

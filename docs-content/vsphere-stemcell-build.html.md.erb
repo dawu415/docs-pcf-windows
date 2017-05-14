@@ -119,7 +119,8 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select your desired datastore and directory.
 	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
 1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
-1. Create a new virtual machine for this purpose [//]: # "What purpose?" (if you are using an existing template, select the **creation type**: **Deploy from template** and select the existing template) and click next.
+1. Create a new virtual machine for this purpose 
+	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template) and then click next
 1. [//]: # "Select a name and folder?"
 1. [//]: # "Resource?"
 1. [//]: # "Storage?"
@@ -169,11 +170,11 @@ $ rake package:psmodules
 	1. Run the following powershell command `Protect-CFCell`
 
 
-To make sure you have the proper .NET Framework version(s) installed, follow this guide (Fill in with guide)
+To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>
 
 ## Step 5: Build & Install BOSH Agent
 
-If you do not have Ruby and Golang to package the BOSH Agent, skip the first step below and download the `agent.zip` attached in your desired release.
+The `agent.zip` is provided as a package in the release available on Github. We recommend using that package. If you need to build from source, then run the `rake` command in the first step of this section.
 
 1. On your host, not in the VM for your stemcell, run `rake package:agent`
 1. Transfer `build/agent.zip` you built in the previous step, or the `agent.zip` downloaded from the releases page to your Windows VM.
@@ -190,8 +191,6 @@ If you would like to apply the recommended local security policy:
 
 This will power off the VM. Do not turn the VM back on before exporting.
 
-Or:
-
 If you would like to simply sysprep the image without applying the recommended security policies use the `-SkipLGPO` flag.
 
 1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
@@ -202,7 +201,7 @@ This will power off the VM. Do not turn the VM back on before exporting.
 
 If you are using VMware Fusion or Workstation, after powering off the VM, locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. Otherwise simply right click on the VM to find its location.
 
-Convert the `.vmx` file into an OVA archive using **ovftool**:
+Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
 
 `ovftool <PATH_TO_VMX_FILE> image.ova`
 

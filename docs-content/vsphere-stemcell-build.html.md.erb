@@ -1,0 +1,219 @@
+---
+title: Creating a vSphere Stemcell Manually
+owner: Greenhouse
+---
+
+<strong><%= modified_date %></strong>
+
+This topic discusses how to create a vSphere stemcell manually. In vSphere, customers must build their own Stemcells in order to use their on-premise deployments. This document describes using VMware Workstation, VMware Fusion, and vCenter to install the BOSH dependencies and then create a .tgz file that can be uploaded to your BOSH director and used with Cloud Foundry.
+
+<p class="note"><strong>Note</strong>
+This process is based on the fact that the operator is maintaining an updated template with all Windows recommended security updates. Every release of this repository includes an updates.txt file that lists the currently recommended KB Microsoft hotfixes to have installed. You can determine if your image needs updates by creating a VM with the image and going to control panel. If any critical or important updates are available we recommend installing updates first, then rebuilding the stemcell.
+</p>
+
+<table>
+<tr>
+  <th>Component</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td><a href="https://www.vmware.com/support/developer/ovf">ovftool</a></td>
+  <td>Please make sure <code>ovftool</code>command is available from your command line.
+  It is installed by default in <code>C:\Program Files\VMware\VMware OVF Tool</code>.</td>
+</tr>
+<tr>
+  <td><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2">Windows ISO</a></td>
+  <td>You can also use a custom base image.</td>
+</tr>
+<tr>
+<td><a href="https://golang.org/dl/">Golang</a></td>
+<td>Latest 1.8.x compiler</td>
+</tr>
+<tr>
+<td><a href="https://www.ruby-lang.org/en/downloads/">Ruby</a></td>
+<td>Latest 2.3.x version</td>
+</tr>
+<tr>
+<td>VMware Workstation, or VMware Fusion, or access to a vSphere account</td>
+<td></td>
+</tr>
+<tr>
+  <td><a href="https://git-scm.com/downloads">git</a></td>
+  <td></td>
+</tr>
+<tr>
+<td><a href="https://greenhouse.ci.cf-app.com/teams/main/pipelines/tar/resources/s3-bucket">tar.exe</a></td>
+<td>If on Windows</td>
+</tr>
+<tr>
+<td><a href="https://packages.vmware.com/tools/esx/6.0latest/windows/x64/VMware-tools-10.0.9-3917699-x86_64.exe">VMware Tools</a></td>
+<td></td>
+</tr>
+</table>
+
+<p class="note"><strong>Note</strong>
+These are instructions for installing Windows from a Windows installation disk ISO. You may adapt the instructions if you are starting from some different Windows image. Make sure that your image has <b>Hardware Compatibility</b> set to version 9, and that it has VMware tools installed.
+</p>
+
+## Step 1: Create base VM for stemcell
+###For VMware Fusion
+1. Select **File** and then **New**.
+1. Select **Installation Method: Create a custom virtual machine**.
+1. Choose Operating System: Microsoft Windows, and then Windows Server 2012.
+1. Choose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
+1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
+1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
+	* In the  **Removable Devices** row, select **Camera**, and then Remove device.
+	* In the  **Removable Devices** row, select **CD/DVD** and then check the 'Connect CD/DVD Drive' box.
+	* In the **This drive is configured to use the following:** section, select "Choose a disc or disc image" and then input your base ISO.
+	* In the **Advanced Options** section select **Bus type** and then **SCSI**, which is required for Hardware Version 9.
+	* In the **Other** row, select **Compatibility** then  **Advanced Options**, **Use Hardware Version number 9**, and then click **Apply**.
+	* In **Processor & Memory**, located within the **System Settings** row, keep the default settings for cores, processors, and memory.
+1. Start VM. 
+	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation).
+1. Install VMware Tools.
+	1. Select **Virtual Machine**, select  **Install VMWare Tools**, **Complete Installation**, and follow the installation instructions. 
+	1. Restart the VM to finish the install.
+1. Shutdown the VM.
+1. In the **Settings** window of the new VM, select **CD/DVD**, within the the **Removable Devices** row.
+	1. Select **Autodetect**. This effectively removes the ISO.
+	1. Deselect **Connect CD/DVD Drive**.
+	1. Select **Advanced Options**, and switch **Bus type** to **IDE**.
+1. Turn on and then turn off the VM. This is required to apply changes to CD/DVD.
+1. In the **Other** row, select **Compatibility** then  **Advanced Options** and ensure that **Hardware Version** is set to **9**.
+
+###For VMware Workstation
+1. Install VMware workstation.
+1. Create new Virtual Machine
+	1. Select **Custom Advanced** and then click **Next**.
+	1. Select **Workstation 9.x Compatibility** and then click **Next**.
+	1. Select **I will install operating system later** and then click **Next**.
+	1. Select **Microsoft Windows** and then the **Windows 2012R2** version and then click **Next**.
+	1. Choose a name for your virtual machine and then click **Next**.
+	1. Select **BIOS** and click **Next**.
+	1. Keep default settings for number of cores and processors and then click **Next**.
+	1. Keep default settings for memory and then click **Next**.
+	1. Select the correct **Network Type (NAT)** and then click **Next**.
+	1. Create a new virtual disk and then click **Next**.
+	1. Select **Customize Hardware**.
+		1. Select **New CD/DVD**.
+		1. Select **Use ISO Image file** and browse for the correct ISO.
+1. Power on the new VM and install Windows.
+	1. Select server with GUI.
+	1. Select **Custom Installation**.
+	1. Continue the installation and select a password for the Admin user.
+1. After the VM has started successfully, right-click the machine name in Workstation and Install VMware Tools.
+1. Shut down the VM.
+1. Remove the ISO file from the CD/DVD drive
+	1. Select the settings for the VM.
+	1. Select **CD/DVD Remove**.
+	1. Add **CD/DVD Drive**.
+	1. Select **Use Physical drive** and **Auto Detect**.
+	1. Deselect **Connect at power on**.
+	1. Select **Ok**.
+1. Start the new
+
+###For vCenter
+1. If you are using an ISO, upload it to your datastore.
+	1. Select **vCenter** and then **Datastores**.
+	1. Select your desired datastore and directory.
+	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
+1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
+1. Create a new virtual machine.
+	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template) and then click **Next**.
+
+1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click **Next**.
+1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
+1. In **Customize Hardware**:
+	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
+	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
+	1. Click Browse and select the ISO you uploaded to your datastore.
+1. After creating VM, click **Power On** in the **Actions** tab for your VM, then install Windows:
+	1. Select server with GUI.
+	1. Select custom installation.
+	1. Complete the installation process and add **select a password** for Administrator user.
+1. In the vCenter web client, "Install VMware Tools" in the **VM Summary** tab.
+
+## Step 2: Package BOSH PSModules
+
+PS Modules are provided as a package in releases on Github. We recommend using that package. If you need to build from source, then proceed to the Install BOSH PSModules section.
+
+To package BOSH PSModules:
+
+Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not, in the VM for your stemcell, and expand the submodules:
+
+<p class="note"><strong>Note</strong>
+Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.
+</p>
+
+<pre class="terminal">
+$ git clone https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
+$ cd bosh-windows-stemcell-builder
+$ git checkout <DESIRED_STEMCELL_VERSION_TAG>
+$ git submodule update --init --recursive
+$ gem install bundler
+$ bundle install
+$ rake package:psmodules
+</pre>
+
+## Step 3: Install BOSH PSModules
+
+1. Transfer the `build/bosh-psmodules.zip` you built in Step 2, or the `bosh-psmodules.zip` downloaded from the releases page to your Windows VM. You can drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion.
+1. Unzip the zip file and copy the BOSH.* folders to `C:\Program Files\WindowsPowerShell\Modules`
+
+
+## Step 4: Install CloudFoundry Cell requirements
+
+1. On your windows VM, start `powershell` and run `Install-CFFeatures`.
+1. Apply the recommended ingress and service configuration:
+	1. Run the following powershell command `Protect-CFCell`.
+
+
+To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>
+
+## Step 5: Build & Install BOSH Agent
+
+The `agent.zip` is provided as a package in the release available on Github. We recommend using that package. If you need to build from source, then run the `rake` command in the first step of the Build & Install BOSH Agent section below.
+
+1. On your host, not in the VM for your stemcell, run `rake package:agent`
+1. Transfer `build/agent.zip` you built in the previous step, or the `agent.zip` downloaded from the releases page to your Windows VM.
+1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath <PATH_TO_agent.zip>`
+
+## Step 6: Sysprep and optionally apply security policies
+
+If you would like to apply the recommended local security policy:
+
+1. Download `lgpo.exe` to the Windows VM you are provisioning.
+1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.
+1. Run the following powershell command 
+`Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
+
+This will power off the VM. Do not turn the VM back on before exporting.
+
+If you would like to `sysprep` the image without applying the recommended security policies use the `-SkipLGPO` flag.
+
+1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
+
+This will power off the VM. Do not turn the VM back on before exporting.
+
+## Step 7: Export image to OVA format
+
+If you are using VMware Fusion or Workstation: 
+
+1. Power off the VM. 
+1. Locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. You can also right-click on the VM to find its location.
+1. Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
+
+`ovftool <PATH_TO_VMX_FILE> image.ova`
+
+## Step 8: Convert OVA file to a BOSH Stemcell
+The format of the rake task is `rake package:vsphere_ova[<path_to_ova>,<path_to_stemcell_destination_directory>,stemcell_version]`
+
+For example:
+<pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
+
+Currently, the OVA filename and destination path cannot have spaces within them. 
+
+## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
+
+Here are the <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/tree/develop#testing-stemcell-with-bosh-windows-acceptance-tests">instructions</a> for running bosh-windows-acceptance-tests(BWATS).

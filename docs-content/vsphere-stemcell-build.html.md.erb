@@ -69,12 +69,12 @@ These are instructions for installing Windows from a Windows installation disk I
 	* In the **Advanced Options** section select **Bus type** and then **SCSI**, which is required for Hardware Version 9.
 	* In the **Other** row, select **Compatibility** then  **Advanced Options**, **Use Hardware Version number 9**, and then click **Apply**.
 	* In **Processor & Memory**, located within the **System Settings** row, keep the default settings for cores, processors, and memory.
-1. Start VM 
+1. Start VM. 
 	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation).
-1. Install VMware Tools
+1. Install VMware Tools.
 	1. Select **Virtual Machine**, select  **Install VMWare Tools**, **Complete Installation**, and follow the installation instructions. 
 	1. Restart the VM to finish the install.
-1. Shutdown the VM
+1. Shutdown the VM.
 1. In the **Settings** window of the new VM, select **CD/DVD**, within the the **Removable Devices** row.
 	1. Select **Autodetect**. This effectively removes the ISO.
 	1. Deselect **Connect CD/DVD Drive**.
@@ -98,19 +98,19 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select **Customize Hardware**.
 		1. Select **New CD/DVD**.
 		1. Select **Use ISO Image file** and browse for the correct ISO.
-1. Power on the new VM and install Windows
-	1. Select server with GUI
-	1. Select **Custom Installation**
-	1. Continue the installation and select a password for the Admin user
-1. After the VM has started successfully, right-click the machine name in Workstation and Install VMware Tools
-1. Shut down the VM
+1. Power on the new VM and install Windows.
+	1. Select server with GUI.
+	1. Select **Custom Installation**.
+	1. Continue the installation and select a password for the Admin user.
+1. After the VM has started successfully, right-click the machine name in Workstation and Install VMware Tools.
+1. Shut down the VM.
 1. Remove the ISO file from the CD/DVD drive
-	1. Select the settings for the VM
-	1. Select **CD/DVD Remove**
-	1. Add **CD/DVD Drive**
-	1. Select **Use Physical drive** and **Auto Detect**
-	1. Deselect **Connect at power on**
-	1. Select **Ok**
+	1. Select the settings for the VM.
+	1. Select **CD/DVD Remove**.
+	1. Add **CD/DVD Drive**.
+	1. Select **Use Physical drive** and **Auto Detect**.
+	1. Deselect **Connect at power on**.
+	1. Select **Ok**.
 1. Start the new
 
 ###For vCenter
@@ -119,20 +119,18 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select your desired datastore and directory.
 	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
 1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
-1. Create a new virtual machine for this purpose 
+1. Create a new virtual machine.
 	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template) and then click **Next**.
-1. [//]: # "Select a name and folder?"
-1. [//]: # "Resource?"
-1. [//]: # "Storage?"
+
 1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click **Next**.
 1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
-1. In **Customize Hardware**
+1. In **Customize Hardware**:
 	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
 	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
 	1. Click Browse and select the ISO you uploaded to your datastore.
 1. After creating VM, click **Power On** in the **Actions** tab for your VM, then install Windows:
 	1. Select server with GUI.
-	1. Select custom installation
+	1. Select custom installation.
 	1. Complete the installation process and add **select a password** for Administrator user.
 1. In the vCenter web client, "Install VMware Tools" in the **VM Summary** tab.
 
@@ -142,7 +140,7 @@ PS Modules are provided as a package in releases on Github. We recommend using t
 
 To package BOSH PSModules:
 
-- Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not, in the VM for your stemcell, and expand the submodules:
+Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not, in the VM for your stemcell, and expand the submodules:
 
 <p class="note"><strong>Note</strong>
 Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.
@@ -166,9 +164,9 @@ $ rake package:psmodules
 
 ## Step 4: Install CloudFoundry Cell requirements
 
-1. On your windows VM, start `powershell` and run `Install-CFFeatures`
+1. On your windows VM, start `powershell` and run `Install-CFFeatures`.
 1. Apply the recommended ingress and service configuration:
-	1. Run the following powershell command `Protect-CFCell`
+	1. Run the following powershell command `Protect-CFCell`.
 
 
 To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>
@@ -185,8 +183,8 @@ The `agent.zip` is provided as a package in the release available on Github. We 
 
 If you would like to apply the recommended local security policy:
 
-1. Download `lgpo.exe` to the Windows VM you are provisioning and 
-1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`
+1. Download `lgpo.exe` to the Windows VM you are provisioning.
+1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.
 1. Run the following powershell command 
 `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
 
@@ -202,7 +200,7 @@ This will power off the VM. Do not turn the VM back on before exporting.
 
 If you are using VMware Fusion or Workstation: 
 
-1. Power off the VM 
+1. Power off the VM. 
 1. Locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. You can also right-click on the VM to find its location.
 1. Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
 
@@ -218,4 +216,4 @@ Currently, the OVA filename and destination path cannot have spaces within them.
 
 ## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
 
-Here are the <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/tree/develop#testing-stemcell-with-bosh-windows-acceptance-tests">instructions</a> for running bosh-windows-acceptance-tests(BWATS)
+Here are the <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/tree/develop#testing-stemcell-with-bosh-windows-acceptance-tests">instructions</a> for running bosh-windows-acceptance-tests(BWATS).

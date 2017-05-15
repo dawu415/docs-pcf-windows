@@ -120,12 +120,12 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select **Upload  a file to datastore** and upload the ISO. This would be the hard disk icon with green plus sign.
 1. If you are using a web browser to upload the ISO to your datastore, you will be prompted to install a web plugin.  
 1. Create a new virtual machine for this purpose 
-	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template) and then click next
+	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template) and then click **Next**.
 1. [//]: # "Select a name and folder?"
 1. [//]: # "Resource?"
 1. [//]: # "Storage?"
-1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click next.
-1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click next. 
+1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click **Next**.
+1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
 1. In **Customize Hardware**
 	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
 	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
@@ -159,7 +159,7 @@ $ rake package:psmodules
 
 ## Step 3: Install BOSH PSModules
 
-1. Transfer the `build/bosh-psmodules.zip` you built in Step 2, or the `bosh-psmodules.zip` downloaded from the releases page to your Windows VM (Note: you can just drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion)
+1. Transfer the `build/bosh-psmodules.zip` you built in Step 2, or the `bosh-psmodules.zip` downloaded from the releases page to your Windows VM. You can drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion.
 1. Unzip the zip file and copy the BOSH.* folders to `C:\Program Files\WindowsPowerShell\Modules`
 
 
@@ -174,7 +174,7 @@ To make sure you have the proper .NET Framework version(s) installed, follow thi
 
 ## Step 5: Build & Install BOSH Agent
 
-The `agent.zip` is provided as a package in the release available on Github. We recommend using that package. If you need to build from source, then run the `rake` command in the first step in the Build & Install BOSH Agent section below.
+The `agent.zip` is provided as a package in the release available on Github. We recommend using that package. If you need to build from source, then run the `rake` command in the first step of the Build & Install BOSH Agent section below.
 
 1. On your host, not in the VM for your stemcell, run `rake package:agent`
 1. Transfer `build/agent.zip` you built in the previous step, or the `agent.zip` downloaded from the releases page to your Windows VM.
@@ -199,11 +199,11 @@ This will power off the VM. Do not turn the VM back on before exporting.
 
 ## Step 7: Export image to OVA format
 
-If you are using VMware Fusion or Workstation, after powering off the VM, locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. 
+If you are using VMware Fusion or Workstation: 
 
-You can also right-click on the VM to find its location.
-
-Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
+1. Power off the VM 
+1. Locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. You can also right-click on the VM to find its location.
+1. Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
 
 `ovftool <PATH_TO_VMX_FILE> image.ova`
 
@@ -213,4 +213,4 @@ The format of the rake task is `rake package:vsphere_ova[<path_to_ova>,<path_to_
 For example:
 <pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
 
-Currently, the OVA filename and destination path cannot have spaces.
+Currently, the OVA filename and destination path cannot have spaces within them. 

@@ -59,7 +59,7 @@ These are instructions for installing Windows from a Windows installation disk I
 ###For VMware Fusion
 1. Select **File** and then **New**.
 1. Select **Installation Method: Create a custom virtual machine**.
-1. Choose Operating System: Microsoft Windows => Windows Server 2012.
+1. Choose Operating System: Microsoft Windows, and then Windows Server 2012.
 1. Choose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
 1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
 1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
@@ -111,7 +111,7 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select **Use Physical drive** and **Auto Detect**
 	1. Deselect **Connect at power on**
 	1. Select **Ok**
-1. Start the new VM
+1. Start the new
 
 ###For vCenter
 1. If you are using an ISO, upload it to your datastore.
@@ -144,8 +144,9 @@ To package BOSH PSModules:
 
 - Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not, in the VM for your stemcell, and expand the submodules:
 
-NOTE: Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules.
-NOTE: On Windows you MUST clone straight into `C:\\`, or the git clone and submodule update will fail due to file path lengths.
+<p class="note"><strong>Note</strong>
+Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.
+</p>
 
 <pre class="terminal">
 $ git clone https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
@@ -214,3 +215,7 @@ For example:
 <pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
 
 Currently, the OVA filename and destination path cannot have spaces within them. 
+
+## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
+
+Here are the <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/tree/develop#testing-stemcell-with-bosh-windows-acceptance-tests">instructions</a> for running bosh-windows-acceptance-tests(BWATS)

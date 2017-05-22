@@ -81,8 +81,8 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select **Autodetect**. This effectively removes the ISO.
 	1. Deselect **Connect CD/DVD Drive**.
 	1. Select **Advanced Options**, and switch **Bus type** to **IDE**.
-instALL VM1. Turn on and then turn off the VM. This is required to apply changes to CD/DVD.
-1. In the **Other** row, select **Compatibility** then  **Advanced Options** and ensure that **Hardware Version** is set to **9**.
+1. Turn on and then turn off the VM. This is required to apply changes to CD/DVD.
+1. In the **Other** row, select **Compatibility** and then **Advanced Options**. Ensure that the **Hardware Version** is set to **9**.
 
 ###For VMware Workstation
 1. Install VMware workstation.
@@ -124,7 +124,7 @@ instALL VM1. Turn on and then turn off the VM. This is required to apply changes
 1. Create a new virtual machine.
 	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template, and then click **Next**.
 
-1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click **Next**.
+1. In **Select compatibility**, ensure that you choose **ESXi 5.5 and later** and click **Next**.
 1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
 1. In **Customize Hardware**:
 	1. Under **New CD\DVD Drive**:
@@ -227,5 +227,55 @@ Currently, the OVA filename and destination path cannot have spaces within them.
 ## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
 
 Using bosh-windows-acceptance-tests helps you confirm that your stemcell is working as expected. 
+### Requirements
 
-Here are the <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/tree/develop#testing-stemcell-with-bosh-windows-acceptance-tests">instructions</a> for running bosh-windows-acceptance-tests(BWATS).
+* Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a>
+* <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
+
+Set the following environment variables:
+
+**<a href="https://github.com/cloudfoundry/bosh-cli">bosh cli</a> environment variables**
+
+  * BOSH_TARGET: IP of your BOSH director
+  * BOSH_CLIENT:
+  * BOSH_CLIENT_SECRET:
+  * BOSH_CA_CERT: (not a file name, but the actual cert itself)
+  * BOSH_UUID:
+
+**Stemcell to Test**
+
+  * STEMCELL_PATH: the path to the stemcell tarball
+
+**Match with <a href="https://bosh.io/docs/cloud-config.html">cloud config</a>**
+
+  * AZ:
+  * VM_TYPE:
+  * VM_EXTENSIONS:
+  * NETWORK:
+
+  Run BWATS:
+
+<pre class="terminal">$ rake package: bwats
+$ rake run:bwats ["vsphere"]</pre>
+
+### Example Configuration
+
+These tests are run in the <a href="https://main.bosh-ci.cf-app.com/teams/main/pipelines/windows-stemcells">BOSH Windows Stemcells Pipeline</a>.
+
+You can create a `config.json` file, for example:
+
+`
+  "bosh": {
+    "ca_cert": "<contents of your bosh director cert, with \n for newlines>",
+    "client": "<bosh client name>",
+    "client_secret": "<bosh client secret>",
+    "target": "<IP of your bosh director>"
+  },
+  "stemcell_path": "<absolute path to stemcell tgz>",
+  "az": "<area zone from bosh cloud config>",
+  "vm_type": "<vm_type from bosh cloud config>",
+  "vm_extensions": "<comma separated string of options, e.g. 50GB_ephemeral_disk>",
+  "network": "<network from bosh cloud config>"
+}
+`
+

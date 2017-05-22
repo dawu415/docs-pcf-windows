@@ -5,7 +5,9 @@ owner: Greenhouse
 
 <strong><%= modified_date %></strong>
 
-This topic discusses how to create a vSphere stemcell manually. In vSphere, customers must build their own Stemcells in order to use their on-premise deployments. This document describes using VMware Workstation, VMware Fusion, and vCenter to install the BOSH dependencies and then create a .tgz file that can be uploaded to your BOSH director and used with Cloud Foundry.
+ In vSphere, customers must build their own Stemcells in order to use their on-premise deployments. In order to create the vSphere stemcell manually, you must first begin with an ISO or other VM image. This document describes how to use VMware Workstation, VMware Fusion, and vCenter to:
+	*install the BOSH dependencies
+	*create a .tgz file (the stemcell) that can be uploaded to your BOSH director and used with Cloud Foundry.
 
 <p class="note"><strong>Note</strong>
 This process is based on the fact that the operator is maintaining an updated template with all Windows recommended security updates. Every release of this repository includes an updates.txt file that lists the currently recommended KB Microsoft hotfixes to have installed. You can determine if your image needs updates by creating a VM with the image and going to control panel. If any critical or important updates are available we recommend installing updates first, then rebuilding the stemcell.
@@ -125,14 +127,24 @@ These are instructions for installing Windows from a Windows installation disk I
 1. In **Select compatibility** ensure that you choose **ESXi 5.5 and later** and click **Next**.
 1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
 1. In **Customize Hardware**:
-	1. Under **New CD\DVD Drive**, select **Datastore ISO File**. 
-	1. Expand the menu within **New CD\DVD Drive** and select **Connect At Power On**.
-	1. Click Browse and select the ISO you uploaded to your datastore.
+	1. Under **New CD\DVD Drive**:
+	  * Select **Datastore ISO File**. 
+	  * Expand the menu and select **Connect At Power On**.
+	  * Click **Browse** and select the ISO you uploaded to your datastore.
+	  * Select **IDE** as the Virtual Device Node.
+	1. Remove floppy drive, if present.
+	1. Remove SATA Controller, if present.  
 1. After creating VM, click **Power On** in the **Actions** tab for your VM, then install Windows:
 	1. Select server with GUI.
 	1. Select custom installation.
 	1. Complete the installation process and add **select a password** for Administrator user.
 1. In the vCenter web client, "Install VMware Tools" in the **VM Summary** tab.
+1. With the VM powered off, select *Edit Settings*.
+  * Remove CD/DVD drive.
+  * Select **New device** > **CD/DVD Drive** and click **Add**.
+  * Under **New CD/DVD Drive**, select **Client Device**. 
+  * Expand the menu and select **IDE** as the Virtual Device Node. **'Connect at Power On' should NOT be selected.**
+1. Remove New SATA Controller, if present. 
 
 ## Step 2: Package BOSH PSModules
 

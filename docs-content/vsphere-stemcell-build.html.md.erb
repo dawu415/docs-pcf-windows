@@ -171,7 +171,7 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 1. Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not in the VM for your stemcell.
 1. Expand the submodules by running the commands below:
 	<pre class="terminal">
-	$ git clone https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
+	$ git clone <span>https:</span>//github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
 	$ cd bosh-windows-stemcell-builder
 	$ git checkout <DESIRED_STEMCELL_VERSION_TAG>
 	$ git submodule update --init --recursive
@@ -210,14 +210,14 @@ Pivotal does not recommend building the <code>agent.zip</code> from the source. 
 ## Step 6:  Optimize and Compress Disk
 In order to reduce the stemcell size, you can run the following powershell modules:
 
-* `Optimize-Disk`: This command is a wrapper that runs dism and clears unnecessary files.
+* `Optimize-Disk`: This command is a wrapper that runs `dism` and clears unnecessary files.
 * `Compress-Disk`: This command can be used to defrag and zero out the disk.
 
 ## Step 7: Sysprep and apply security policies
 
 Applying the security policies supports the security of the stemcell and firewall rules that ensure secure operations on Cloud Foundry; therefore, Pivotal strongly recommends applying these policies. You can do so by completing the steps below:
 
-1. Download `lgpo.exe` to the Windows VM you are provisioning.
+1. Download `lgpo.exe` from [here](https://msdnshared.blob.core.windows.net/media/2016/09/LGPOv2-PRE-RELEASE.zip) to the Windows VM you are provisioning.
 1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.
 1. Run the following powershell command: 
 `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
@@ -240,7 +240,7 @@ If you are using VMware Fusion or Workstation:
 	`ovftool <PATH_TO_VMX_FILE> image.ova`
 
 ## Step 9: Convert OVA file to a BOSH Stemcell
-The format of the `rake` task is: `rake package:vsphere_ova[<path_to_ova>,<path_to_stemcell_destination_directory>,stemcell_version]`
+Convert the OVA file by running the following command: `rake package:vsphere_ova[<PATH_TO_OVA>,<PATH_TO_STEMCELL_DESTINATION_DIRECTORY>,STEMCELL_VERSION]`
 
 For example:
 <pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
@@ -249,34 +249,35 @@ Currently, the OVA filename and destination path cannot contain spaces.
 
 ## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
 
-Using bosh-windows-acceptance-tests helps you confirm that your stemcell is working as expected. 
-### Requirements
- 
-* Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a>
-* <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
+Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is working as expected. 
+
+<b>Requirements</b>
+</br>
+- Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></br>
+- <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
 
 Set the following environment variables:
 
 **<a href="https://github.com/cloudfoundry/bosh-cli">bosh cli</a> environment variables**
 
-  * BOSH_TARGET: IP of your BOSH director
-  * BOSH_CLIENT:
-  * BOSH_CLIENT_SECRET:
-  * BOSH_CA_CERT: (not a file name, but the actual cert itself)
-  * BOSH_UUID:
+  * <b>BOSH_TARGET</b>: This is the IP of your BOSH director.
+  * <b>BOSH\_CLIENT</b>: This is the BOSH client name.
+  * <b>BOSH\_CLIENT\_SECRET</b>:
+  * <b>BOSH\_CA\_CERT</b>:This is the contents of your bosh director cert, including \n for newlines.
+  * <b>BOSH\_UUID</b>:
 
 **Stemcell to Test**
 
-  * STEMCELL_PATH: the path to the stemcell tarball
+  * <b>STEMCELL_PATH</b>: This is the path to the stemcell tarball.
 
 **Match with <a href="https://bosh.io/docs/cloud-config.html">cloud config</a>**
 
-  * AZ:
-  * VM_TYPE:
-  * VM_EXTENSIONS:
-  * NETWORK:
+  * <b>AZ</b>: This is the area zone from the BOSH cloud config. 
+  * <b>VM_TYPE</b>: This is the virtual machine type from the BOSH cloud config. 
+  * <b>VM_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB_ephemeral_disk.
+  * <b>NETWORK</b>: This is the network from the BOSH cloud config. 
 
-  Run BWATS:
+Run BWATS:
 
 <pre class="terminal">$ rake package: bwats
 $ rake run:bwats ["vsphere"]</pre>
@@ -287,18 +288,5 @@ These tests are run in the <a href="https://main.bosh-ci.cf-app.com/teams/main/p
 
 You can create a `config.json` file, for example:
 
-`
-  "bosh": {
-    "ca_cert": "<contents of your bosh director cert, with \n for newlines>",
-    "client": "<bosh client name>",
-    "client_secret": "<bosh client secret>",
-    "target": "<IP of your bosh director>"
-  },
-  "stemcell_path": "<absolute path to stemcell tgz>",
-  "az": "<area zone from bosh cloud config>",
-  "vm_type": "<vm_type from bosh cloud config>",
-  "vm_extensions": "<comma separated string of options, e.g. 50GB_ephemeral_disk>",
-  "network": "<network from bosh cloud config>"
-}
-`
+And then run these tests with CONFIG_JSON=<path-to-config.json> ginkgo.
 

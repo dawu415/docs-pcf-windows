@@ -247,7 +247,7 @@ For example:
 
 Currently, the OVA filename and destination path cannot contain spaces. 
 
-## Step 10: Testing Stemcell with bosh-windows-acceptance-tests
+## Step 10: Testing Stemcell with bosh-windows-acceptance-tests (BWATS)
 
 Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is working as expected. 
 
@@ -279,16 +279,30 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 1. Create a `config.json` file and
 set the above environment variables in that `config.json` file:
 
-1. Run BWATS:
+1. Run bosh-windows-acceptance-tests (BWATS) with the following commands:
 
 <pre class="terminal">$ rake package: bwats
 $ rake run:bwats ["vsphere"]</pre>
 
-### Example Configuration
 
+<b>Example Configuration</b>
+</br>
 These tests are run in the <a href="https://main.bosh-ci.cf-app.com/teams/main/pipelines/windows-stemcells">BOSH Windows Stemcells Pipeline</a>.
 
-You can create a `config.json` file, for example:
 
 And then run these tests with CONFIG_JSON=<path-to-config.json> ginkgo.
 
+<pre>{
+  "bosh": {
+    "ca_cert": "<contents of your bosh director cert, with \n for newlines>",
+    "client": "<bosh client name>",
+    "client_secret": "<bosh client secret>",
+    "target": "<This is the IP of your BOSH director.>"
+  },
+  "stemcell_path": "<absolute path to stemcell tgz>",
+  "az": "<area zone from bosh cloud config>",
+  "vm_type": "<vm_type from bosh cloud config>",
+  "vm_extensions": "<comma separated string of options, e.g. 50GB_ephemeral_disk>",
+  "network": "<network from bosh cloud config>"
+}
+</pre>

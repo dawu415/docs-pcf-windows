@@ -215,7 +215,7 @@ In order to reduce the stemcell size, you can run the following powershell modul
 
 ## Step 7: Sysprep and apply security policies
 
-Applying the security policies supports the security of the stemcell and firewall rules that ensure secure operations on Cloud Foundry; therefore, Pivotal strongly recommends applying these policies. You can do so by completing the steps below:
+Applying the security policies supports the security of the stemcell and firewall rules that ensure secure operations on Cloud Foundry; therefore, Pivotal strongly recommends applying these policies. You can do so by completing the three steps below:
 
 1. Download `lgpo.exe` from [here](https://msdnshared.blob.core.windows.net/media/2016/09/LGPOv2-PRE-RELEASE.zip) to the Windows VM you are provisioning.
 1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.
@@ -290,7 +290,7 @@ $ rake run:bwats ["vsphere"]</pre>
 These tests are run in the <a href="https://main.bosh-ci.cf-app.com/teams/main/pipelines/windows-stemcells">BOSH Windows Stemcells Pipeline</a>.
 
 
-And then run these tests with CONFIG_JSON=<path-to-config.json> ginkgo.
+And then run these tests with `CONFIG_JSON=PATH_TO_CONFIG.json ginkgo`.
 
 <pre>{
   "bosh": {

@@ -256,8 +256,6 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 - Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></br>
 - <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
 
-Set the following environment variables:
-
 **<a href="https://github.com/cloudfoundry/bosh-cli">bosh cli</a> environment variables**
 
   * <b>BOSH_TARGET</b>: This is the IP of your BOSH director.
@@ -274,10 +272,14 @@ Set the following environment variables:
 
   * <b>AZ</b>: This is the area zone from the BOSH cloud config. 
   * <b>VM_TYPE</b>: This is the virtual machine type from the BOSH cloud config. 
-  * <b>VM_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB_ephemeral_disk.
+  * <b>VM\_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB_ephemeral_disk.
   * <b>NETWORK</b>: This is the network from the BOSH cloud config. 
 
-Run BWATS:
+
+1. Create a `config.json` file and
+set the above environment variables in that `config.json` file:
+
+1. Run BWATS:
 
 <pre class="terminal">$ rake package: bwats
 $ rake run:bwats ["vsphere"]</pre>

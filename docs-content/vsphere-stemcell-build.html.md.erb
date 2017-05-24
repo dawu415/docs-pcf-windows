@@ -12,7 +12,7 @@ owner: Greenhouse
 <p class="note"><strong>Note</strong>
 This process is based on the fact that the operator is maintaining an updated template with all Windows recommended security updates. Every release of this repository includes an updates.txt file that lists the currently recommended KB Microsoft hotfixes to have installed. You can determine if your image needs updates by creating a VM with the image and going to control panel. If any critical or important updates are available we recommend installing updates first, then rebuilding the stemcell.
 </p>
-ggg
+
 <table>
 <tr>
   <th>Component</th>
@@ -155,9 +155,18 @@ These are instructions for installing Windows from a Windows installation disk I
 Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.
 </p>
 
-<p class="note warning">
-<strong>IMPORTANT: </strong>
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+    .note.warning:before {
+        color: #f99;
+    }
+</style>
+<p class="note warning"><strong>IMPORTANT:</strong>
 Pivotal does not recommend building the BOSH PSModules from the source. However, if you must do so, follow the steps below.</p>
+
 
 1. Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not in the VM for your stemcell.
 1. Expand the submodules by running the commands below:
@@ -192,17 +201,17 @@ To make sure you have the proper .NET Framework version(s) installed, follow thi
 The `agent.zip` is provided as a package in the release available on Github. We recommend downloading the .zip file from that package.
 
 <p class="note warning">
-<strong>IMPORTANT:</strong>
-Pivotal does not recommend building the `agent.zip` from the source. However, if you must do so, run  `rake package:agent` on your host. Do not run the `rake package:agent` command in the VM for your stemcell.</p> 
+<strong>IMPORTANT</strong>
+Pivotal does not recommend building the <code>agent.zip</code> from the source. However, if you must do so, run  <code>rake package:agent</code> on your host. Do not run the <code>rake package:agent</code> command in the VM for your stemcell.</p> 
 
 1. Transfer the `build/agent.zip` file you downloaded from the releases page, or the `build/agent.zip`file you built in the previous step, to your Windows VM.
 1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath <PATH_TO_agent.zip>`
 
 ## Step 6:  Optimize and Compress Disk
-In order to reduce the stemcell size, you can run the following powershell modules to
+In order to reduce the stemcell size, you can run the following powershell modules:
 
-# Optimize-Disk Run dism and clear unnecessary files
-# Compress-Disk Defrag and zero out the disk
+* `Optimize-Disk`: This command is a wrapper that runs dism and clears unnecessary files.
+* `Compress-Disk`: This command can be used to defrag and zero out the disk.
 
 ## Step 7: Sysprep and apply security policies
 
@@ -215,9 +224,9 @@ Applying the security policies supports the security of the stemcell and firewal
 
 Completing the above will power off the VM. Do not turn the VM back on before exporting.
 
-If you decide to `sysprep` the image without applying the recommended security policies, use the `-SkipLGPO` flag.
+<b>If you decide to</b> `sysprep` <b>the image without applying the recommended security policies</b>, use the `-SkipLGPO` flag and run the following powershell command:
 
-1. Run the following powershell command `Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
+`Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
 
 This will power off the VM. Do not turn the VM back on before exporting.
 

@@ -240,7 +240,7 @@ If you are using VMware Fusion or Workstation:
 	`ovftool <PATH_TO_VMX_FILE> image.ova`
 
 ## Step 9: Convert OVA file to a BOSH Stemcell
-Convert the OVA file by running the following command: `rake package:vsphere_ova[<PATH_TO_OVA>,<PATH_TO_STEMCELL_DESTINATION_DIRECTORY>,STEMCELL_VERSION]`
+Convert the OVA file by running the following command: `rake package:vsphere_ova[PATH_TO_OVA,PATH_TO_STEMCELL_DESTINATION_DIRECTORY,STEMCELL_VERSION]`
 
 For example:
 <pre class="terminal">$ rake package:vsphere_ova[./build/image.ova,./build/stemcell,1035.0]</pre>
@@ -253,8 +253,9 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 
 <b>Requirements</b>
 </br>
-- Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></br>
-- <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
+
+* Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></br>
+* <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
 
 **<a href="https://github.com/cloudfoundry/bosh-cli">bosh cli</a> environment variables**
 
@@ -272,11 +273,11 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 
   * <b>AZ</b>: This is the area zone from the BOSH cloud config. 
   * <b>VM_TYPE</b>: This is the virtual machine type from the BOSH cloud config. 
-  * <b>VM\_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB_ephemeral_disk.
+  * <b>VM\_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB\_ephemeral\_disk.
   * <b>NETWORK</b>: This is the network from the BOSH cloud config. 
 
 
-1. Set the above environment variables by using your chosen input method. You can, for example, set the variable by running `export ENVIRONMENT\_VARIABLE`
+1. Set the above environment variables by using your chosen input method. You can, for example, set the variable by running `export ENVIRONMENT_VARIABLE=VARIABLE_PATH_OR_VALUE` in your BASH profile if you are running Linux. If you are running Windows, you can set environment variables within the **Advanced** section of **My Computer**.
 
 1. Run bosh-windows-acceptance-tests (BWATS) with the following `rake` commands:
 

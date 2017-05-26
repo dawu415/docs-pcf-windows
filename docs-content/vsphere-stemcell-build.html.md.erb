@@ -173,7 +173,7 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 	<pre class="terminal">
 	$ git clone <span>https:</span>//github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder
 	$ cd bosh-windows-stemcell-builder
-	$ git checkout <DESIRED_STEMCELL_VERSION_TAG>
+	$ git checkout DESIRED_STEMCELL_VERSION_TAG
 	$ git submodule update --init --recursive
 	$ gem install bundler
 	$ bundle install
@@ -205,7 +205,7 @@ The `agent.zip` is provided as a package in the release available on Github. We 
 Pivotal does not recommend building the <code>agent.zip</code> from the source. However, if you must do so, run  <code>rake package:agent</code> on your host. Do not run the <code>rake package:agent</code> command in the VM for your stemcell.</p> 
 
 1. Transfer the `build/agent.zip` file you downloaded from the releases page, or the `build/agent.zip`file you built in the previous step, to your Windows VM.
-1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath <PATH_TO_agent.zip>`
+1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath PATH_TO_agent.zip`
 
 ## Step 6:  Optimize and Compress Disk
 In order to reduce the stemcell size, you can run the following powershell modules:
@@ -220,13 +220,13 @@ Applying the security policies supports the security of the stemcell and firewal
 1. Download `lgpo.exe` from [here](https://msdnshared.blob.core.windows.net/media/2016/09/LGPOv2-PRE-RELEASE.zip) to the Windows VM you are provisioning.
 1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.
 1. Run the following powershell command: 
-`Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION>`
+`Invoke-Sysprep -IaaS vsphere -NewPassword NEW_PASSWORD -ProductKey PRODUCT_KEY -Owner OWNER -Organization ORGANIZATION`
 
 Completing the above will power off the VM. Do not turn the VM back on before exporting.
 
 <b>If you decide to</b> `sysprep` <b>the image without applying the recommended security policies</b>, use the `-SkipLGPO` flag and run the following powershell command:
 
-`Invoke-Sysprep -IaaS vsphere -NewPassword <NEW_PASSWORD> -ProductKey <PRODUCT_KEY> -Owner <OWNER> -Organization <ORGANIZATION> -SkipLGPO`
+`Invoke-Sysprep -IaaS vsphere -NewPassword NEW_PASSWORD -ProductKey PRODUCT_KEY -Owner OWNER -Organization ORGANIZATION -SkipLGPO`
 
 This will power off the VM. Do not turn the VM back on before exporting.
 

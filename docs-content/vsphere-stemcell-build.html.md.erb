@@ -260,7 +260,7 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 
   * <b>BOSH_TARGET</b>: This is the IP of your BOSH director.
   * <b>BOSH\_CLIENT</b>: This is the BOSH client name.
-  * <b>BOSH\_CLIENT\_SECRET</b>:
+  * <b>BOSH\_CLIENT\_SECRET</b>: This is your BOSH client secret. 
   * <b>BOSH\_CA\_CERT</b>:This is the contents of your bosh director cert, including \n for newlines.
   * <b>BOSH\_UUID</b>:
 
@@ -268,7 +268,7 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
 
   * <b>STEMCELL_PATH</b>: This is the path to the stemcell tarball.
 
-**Match with <a href="https://bosh.io/docs/cloud-config.html">cloud config</a>**
+**Match the below with the contents of your <a href="https://bosh.io/docs/cloud-config.html">cloud config</a>**
 
   * <b>AZ</b>: This is the area zone from the BOSH cloud config. 
   * <b>VM_TYPE</b>: This is the virtual machine type from the BOSH cloud config. 
@@ -276,33 +276,9 @@ Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is 
   * <b>NETWORK</b>: This is the network from the BOSH cloud config. 
 
 
-1. Create a `config.json` file and
-set the above environment variables in that `config.json` file:
+1. Set the above environment variables by using your chosen input method. You can, for example, set the variable by running `export ENVIRONMENT\_VARIABLE`
 
-1. Run bosh-windows-acceptance-tests (BWATS) with the following commands:
+1. Run bosh-windows-acceptance-tests (BWATS) with the following `rake` commands:
 
 <pre class="terminal">$ rake package: bwats
 $ rake run:bwats ["vsphere"]</pre>
-
-
-<b>Example Configuration</b>
-</br>
-These tests are run in the <a href="https://main.bosh-ci.cf-app.com/teams/main/pipelines/windows-stemcells">BOSH Windows Stemcells Pipeline</a>.
-
-
-And then run these tests with `CONFIG_JSON=PATH_TO_CONFIG.json ginkgo`.
-
-<pre>{
-  "bosh": {
-    "ca_cert": "<contents of your bosh director cert, with \n for newlines>",
-    "client": "<bosh client name>",
-    "client_secret": "<bosh client secret>",
-    "target": "<This is the IP of your BOSH director.>"
-  },
-  "stemcell_path": "<absolute path to stemcell tgz>",
-  "az": "<area zone from bosh cloud config>",
-  "vm_type": "<vm_type from bosh cloud config>",
-  "vm_extensions": "<comma separated string of options, e.g. 50GB_ephemeral_disk>",
-  "network": "<network from bosh cloud config>"
-}
-</pre>

@@ -13,6 +13,8 @@ owner: Greenhouse
 This process is based on the fact that the operator is maintaining an updated template with all Windows recommended security updates. Every release of this repository includes an updates.txt file that lists the currently recommended KB Microsoft hotfixes to have installed. You can determine if your image needs updates by creating a VM with the image and going to control panel. If any critical or important updates are available we recommend installing updates first, then rebuilding the stemcell.
 </p>
 
+## <a id="req"></a>Requirements 
+
 <table>
 <tr>
   <th>Component</th>
@@ -57,8 +59,8 @@ This process is based on the fact that the operator is maintaining an updated te
 These are instructions for installing Windows from a Windows installation disk ISO. You may adapt the instructions if you are starting from some different Windows image. Make sure that your image has <b>Hardware Compatibility</b> set to version 9, and that it has VMware tools installed.
 </p>
 
-## Step 1: Create base VM for stemcell
-###For VMware Fusion
+## <a id="Step-1"></a> Step 1: Create base VM for stemcell
+###<a id="Fusion"></a>For VMware Fusion
 1. Select **File** and then **New**.
 1. Select **Installation Method: Create a custom virtual machine**.
 1. Choose Operating System: Microsoft Windows, and then Windows Server 2012.
@@ -84,7 +86,7 @@ These are instructions for installing Windows from a Windows installation disk I
 1. Turn on and then turn off the VM. This is required to apply changes to CD/DVD.
 1. In the **Other** row, select **Compatibility** and then **Advanced Options**. Ensure that the **Hardware Version** is set to **9**.
 
-###For VMware Workstation
+###<a id="Workstation"></a> For VMware Workstation
 1. Install VMware workstation.
 1. Create a new Virtual Machine:
 	1. Select **Custom Advanced** and then click **Next**.
@@ -115,7 +117,7 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. Select **Ok**.
 1. Start the new VM.
 
-###For vCenter
+###<a id="vCenter"></a>For vCenter
 1. If you are using an ISO, upload it to your datastore.
 	1. Select **vCenter** and then **Datastores**.
 	1. Select your desired datastore and directory.
@@ -146,7 +148,7 @@ These are instructions for installing Windows from a Windows installation disk I
   * Expand the menu and select **IDE** as the Virtual Device Node. **'Connect at Power On' should NOT be selected.**
 1. Remove New **SATA Controller**, if present. 
 
-## Step 2: Download BOSH PSModules
+##<a id="Step 2"></a> Step 2: Download BOSH PSModules
 
 1. Download the **bosh-psmodules.zip** for your desired release <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases">here</a>. 
 1. Proceed to Step 3: Install BOSH PSModules.
@@ -181,13 +183,13 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 	</pre>
 
 
-## Step 3: Install BOSH PSModules
+##<a id="Step 3"></a> Step 3: Install BOSH PSModules
 
 1. Transfer the `bosh-psmodules.zip` file you downloaded from the releases page or the `build/bosh-psmodules.zip` file you built from the source to your Windows VM. You can drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion.
 1. Unzip the .zip file and copy the BOSH.* folders to `C:\Program Files\WindowsPowerShell\Modules`.
 
 
-## Step 4: Install CloudFoundry Cell requirements
+##<a id="Step 4"></a> Step 4: Install CloudFoundry Cell requirements
 
 1. On your windows VM, start `powershell` and run `Install-CFFeatures`.
 1. Apply the recommended ingress and service configuration:
@@ -196,7 +198,7 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 
 To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>.
 
-## Step 5: Download and Install the BOSH Agent
+##<a id="Step 5"></a> Step 5: Download and Install the BOSH Agent
 
 The `agent.zip` is provided as a package in the release available on Github. We recommend downloading the .zip file from that package.
 
@@ -207,13 +209,13 @@ Pivotal does not recommend building the <code>agent.zip</code> from the source. 
 1. Transfer the `build/agent.zip` file you downloaded from the releases page, or the `build/agent.zip`file you built in the previous step, to your Windows VM.
 1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath PATH_TO_agent.zip`
 
-## Step 6:  Optimize and Compress Disk
+##<a id="Step 6"></a> Step 6:  Optimize and Compress Disk
 In order to reduce the stemcell size, you can run the following powershell modules:
 
 * `Optimize-Disk`: This command is a wrapper that runs `dism` and clears unnecessary files.
 * `Compress-Disk`: This command can be used to defrag and zero out the disk.
 
-## Step 7: Sysprep and apply security policies
+##<a id="Step 7"></a> Step 7: Sysprep and apply security policies
 
 Applying the security policies supports the security of the stemcell and firewall rules that ensure secure operations on Cloud Foundry; therefore, Pivotal strongly recommends applying these policies. You can do so by completing the three steps below:
 
@@ -230,7 +232,7 @@ Completing the above will power off the VM. Do not turn the VM back on before ex
 
 This will power off the VM. Do not turn the VM back on before exporting.
 
-## Step 8: Export image to OVA format
+##<a id="Step 8"></a> Step 8: Export image to OVA format
 
 If you are using VMware Fusion or Workstation: 
 
@@ -239,7 +241,7 @@ If you are using VMware Fusion or Workstation:
 1. Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
 	`ovftool <PATH_TO_VMX_FILE> image.ova`
 
-## Step 9: Convert OVA file to a BOSH Stemcell
+##<a id="Step 9"></a> Step 9: Convert OVA file to a BOSH Stemcell
 Convert the OVA file by running the following command: `rake package:vsphere_ova[PATH_TO_OVA,PATH_TO_STEMCELL_DESTINATION_DIRECTORY,STEMCELL_VERSION]`
 
 For example:
@@ -247,34 +249,77 @@ For example:
 
 Currently, the OVA filename and destination path cannot contain spaces. 
 
-## Step 10: Testing Stemcell with bosh-windows-acceptance-tests (BWATS)
+##<a id="Step 10"></a> Step 10: Testing Stemcell with bosh-windows-acceptance-tests (BWATS)
 
 Using **bosh-windows-acceptance-tests** helps you confirm that your stemcell is working as expected. 
 
 <b>Requirements</b>
 </br>
 
-* Latest stable <a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></br>
-* <a href="https://golang.org/dl/">Golang</a> Latest 1.8.x compiler
+
+<table>
+<tr>
+  <th>Component</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td><a href="https://bosh.io/docs/cli-v2.html">bosh cli</a></td>
+  <td>Latest stable version</td>
+</tr>
+<tr>
+<td><a href="https://golang.org/dl/">Golang</a></td>
+<td>Latest 1.8.x compiler</td>
+</tr>
+</table>
 
 **<a href="https://github.com/cloudfoundry/bosh-cli">bosh cli</a> environment variables**
 
-  * <b>BOSH_TARGET</b>: This is the IP of your BOSH director.
-  * <b>BOSH\_CLIENT</b>: This is the BOSH client name.
-  * <b>BOSH\_CLIENT\_SECRET</b>: This is your BOSH client secret. 
-  * <b>BOSH\_CA\_CERT</b>:This is the contents of your bosh director cert, including \n for newlines.
-  * <b>BOSH\_UUID</b>:
-
-**Stemcell to Test**
-
-  * <b>STEMCELL_PATH</b>: This is the path to the stemcell tarball.
-
-**Match the below with the contents of your <a href="https://bosh.io/docs/cloud-config.html">cloud config</a>**
-
-  * <b>AZ</b>: This is the area zone from the BOSH cloud config. 
-  * <b>VM_TYPE</b>: This is the virtual machine type from the BOSH cloud config. 
-  * <b>VM\_EXTENSIONS</b>: This is a comma separated string of options, for example, 50GB\_ephemeral\_disk.
-  * <b>NETWORK</b>: This is the network from the BOSH cloud config. 
+<table>
+<tr>
+  <th>Variable</th>
+  <th>Notes</th>
+</tr>
+<tr>
+  <td>BOSH_TARGET</td>
+  <td>This is the IP of your BOSH director.</td>
+</tr>
+<tr>
+<td>BOSH_CLIENT</td>
+<td>This is the BOSH client name.</td>
+</tr>
+<tr>
+<td>BOSH_CLIENT_SECRET</td>
+<td>This is your BOSH client secret.</td>
+</tr>
+<tr>
+<td>BOSH_CA_CERT</td>
+<td>This is the contents of your bosh director cert, including \n for newlines.</td>
+</tr>
+<tr>
+<td>BOSH_UUID</td>
+<td></td>
+</tr>
+<tr>
+<td>STEMCELL_PATH</td>
+<td>This is the path to the stemcell tarball.</td>
+</tr>
+<tr>
+<td>AZ</td>
+<td>This is the area zone from the BOSH <a href="https://bosh.io/docs/cloud-config.html">cloud config.</a></td>
+</tr>
+<tr>
+<td>VM_TYPE</td>
+<td>This is the virtual machine type from the BOSH cloud config.</td>
+</tr>
+<tr>
+<td>VM_EXTENSIONS</td>
+<td>This is a comma separated string of options, for example, 50GB_ephemeral_disk</td>
+</tr>
+<tr>
+<td>NETWORK</td>
+<td>This is the network from the BOSH cloud config. </td>
+</tr>
+</table>
 
 
 1. Set the above environment variables by using your chosen input method. You can, for example, set the variable by running `export ENVIRONMENT_VARIABLE=VARIABLE_PATH_OR_VALUE` in your BASH profile if you are running Linux. If you are running Windows, you can set environment variables within the **Advanced** section of **My Computer**.

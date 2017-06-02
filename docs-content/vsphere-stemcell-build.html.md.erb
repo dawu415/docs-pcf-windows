@@ -55,7 +55,7 @@ This process is based on the fact that the operator is maintaining an updated te
 </tr>
 </table>
 
-<p class="note"><strong>Note</strong>
+<p class="note"><strong>Note:</strong>
 These are instructions for installing Windows from a Windows installation disk ISO. You may adapt the instructions if you are starting from some different Windows image. Make sure that your image has <b>Hardware Compatibility</b> set to version 9, and that it has VMware tools installed.
 </p>
 
@@ -63,7 +63,7 @@ These are instructions for installing Windows from a Windows installation disk I
 ###<a id="Fusion"></a>For VMware Fusion
 1. Select **File** and then **New**.
 1. Select **Installation Method: Create a custom virtual machine**.
-1. Choose Operating System: Microsoft Windows, and then Windows Server 2012.
+1. Choose Operating System: **Microsoft Windows**, and then **Windows Server 2012**. Note, despite this Operating System, you will be selecting **Windows Server 2012R2** in a subsequent step.
 1. Choose a Virtual Disk: Create a new virtual disk. You can use the default settings. 
 1. Select **Customize Settings**. Save the VM before continuing. You can use a name of your choosing. 
 1. A **Settings** window will appear for your new VM. In the settings window, enter the following configurations:
@@ -127,7 +127,7 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. If you are using an existing template, select the **creation type**: **Deploy from template**, select the existing template, and then click **Next**.
 
 1. In **Select compatibility**, ensure that you choose **ESXi 5.5 and later** and click **Next**.
-1. Select Windows as **Guest OS Family** and Microsoft Windows Server 2012R2 as **Guest OS version** and click **Next**. 
+1. Select **Windows** as **Guest OS Family** and **Microsoft Windows Server 2012R2** as **Guest OS version** and click **Next**. 
 1. In **Customize Hardware**:
 	1. Under **New CD\DVD Drive**:
 	  * Select **Datastore ISO File**. 
@@ -153,9 +153,8 @@ These are instructions for installing Windows from a Windows installation disk I
 1. Download the **bosh-psmodules.zip** for your desired release <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases">here</a>. 
 1. Proceed to Step 3: Install BOSH PSModules.
 
-<p class="note"><strong>Note</strong>
-Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.
-</p>
+<p class="note"><strong>Note:</strong>
+Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files from the releases page - they are not Git repositories and are missing submodules. On Windows you MUST clone straight into <code>C:\\</code>, or the git clone and submodule update will fail due to file path lengths.</p>
 
 <style>
     .note.warning {
@@ -169,6 +168,7 @@ Do not use the GitHub generated Source Code.zip and Source Code.tar.gz files fro
 <p class="note warning"><strong>IMPORTANT:</strong>
 Pivotal does not recommend building the BOSH PSModules from the source. However, if you must do so, follow the steps below.</p>
 
+To build the BOSH PSModules from the source:
 
 1. Clone this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder">repo</a> on your host, not in the VM for your stemcell.
 1. Expand the submodules by running the commands below:
@@ -183,7 +183,8 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 	</pre>
 
 
-##<a id="Step 3"></a> Step 3: Install BOSH PSModules
+
+## <a id="Step 3"></a> Step 3: Install BOSH PSModules
 
 1. Transfer the `bosh-psmodules.zip` file you downloaded from the releases page or the `build/bosh-psmodules.zip` file you built from the source to your Windows VM. You can drag and drop files if you have installed VMware tools in your VM and are running Workstation or Fusion.
 1. Unzip the .zip file and copy the BOSH.* folders to `C:\Program Files\WindowsPowerShell\Modules`.
@@ -195,21 +196,24 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 1. Apply the recommended ingress and service configuration:
 	1. Run the following powershell command `Protect-CFCell`.
 
-
 To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>.
 
 ##<a id="Step 5"></a> Step 5: Download and Install the BOSH Agent
 
-The `agent.zip` is provided as a package in the release available on Github. We recommend downloading the .zip file from that package.
+The `agent.zip` is provided as a package in the release available on <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/releases">Github</a>. We recommend downloading the .zip file from that package.
 
 <p class="note warning">
-<strong>IMPORTANT</strong>
-Pivotal does not recommend building the <code>agent.zip</code> from the source. However, if you must do so, run  <code>rake package:agent</code> on your host. Do not run the <code>rake package:agent</code> command in the VM for your stemcell.</p> 
+<strong>IMPORTANT:</strong>
+Pivotal does not recommend building the <code>agent.zip</code> from the source. However, if you must do so, run the rake commands below.</p> 
+
+To build the `agent.zip` from the source:
+
+* Run <code>rake package:agent</code> on your host. Do not run the <code>rake package:agent</code> command in the VM for your stemcell.
 
 1. Transfer the `build/agent.zip` file you downloaded from the releases page, or the `build/agent.zip`file you built in the previous step, to your Windows VM.
-1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath PATH_TO_agent.zip`
+1. On your Windows VM, start `powershell` and run `Install-Agent -IaaS vsphere -agentZipPath PATH_TO_agent.zip`.
 
-##<a id="Step 6"></a> Step 6:  Optimize and Compress Disk
+##<a id="Step 6"></a> Step 6: Optimize and Compress Disk
 In order to reduce the stemcell size, you can run the following powershell modules:
 
 * `Optimize-Disk`: This command is a wrapper that runs `dism` and clears unnecessary files.
@@ -217,7 +221,9 @@ In order to reduce the stemcell size, you can run the following powershell modul
 
 ##<a id="Step 7"></a> Step 7: Sysprep and apply security policies
 
+<p class="note"><strong>Note:</strong>
 Applying the security policies supports the security of the stemcell and firewall rules that ensure secure operations on Cloud Foundry; therefore, Pivotal strongly recommends applying these policies. You can do so by completing the three steps below:
+</p>
 
 1. Download `lgpo.exe` from [here](https://msdnshared.blob.core.windows.net/media/2016/09/LGPOv2-PRE-RELEASE.zip) to the Windows VM you are provisioning.
 1. Save `lgpo.exe` to `C:\Windows\lgpo.exe`.

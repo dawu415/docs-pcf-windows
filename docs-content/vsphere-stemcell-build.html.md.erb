@@ -76,7 +76,7 @@ These are instructions for installing Windows from a Windows installation disk I
 	1. In the **Other** row, select **Compatibility** then  **Advanced Options**, **Use Hardware Version number 9**, and then click **Apply**.
 	1. In **Processor & Memory**, located within the **System Settings** row, keep the default settings for cores, processors, and memory.
 1. Start VM. 
-	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select "Windows Server 2012R2 Standard with a GUI" if going through installation).
+	1. If you are starting from a new MSDN ISO, go through Windows installation process with your ISO (recommend select **Windows Server 2012R2 Standard with a GUI** if going through installation).
 1. Install VMware Tools.
 	1. Select **Virtual Machine**, select  **Install VMWare Tools**, **Complete Installation**, and follow the installation instructions. 
 	1. Restart the VM to finish the install.
@@ -201,7 +201,7 @@ Pivotal does not recommend building the BOSH PSModules from the source. However,
 1. Apply the recommended ingress and service configuration:
 	1. Run the following powershell command `Protect-CFCell`.
 
-To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/blob/develop/manual-stemcell-dotnet-version-guide.md">guide</a>.
+To make sure you have the proper .NET Framework version(s) installed, follow this <a href="https://github.com/cloudfoundry-incubator/bosh-windows-stemcell-builder/wiki/Manual-Stemcell-DotNet-Version-Guide">guide</a>.
 
 ##<a id="Step 5"></a> Step 5: Download and Install the BOSH Agent
 
@@ -253,7 +253,7 @@ This will power off the VM. Do not turn the VM back on before exporting.
 If you are using VMware Fusion or Workstation: 
 
 1. Power off the VM. 
-1. Locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\\Virtual Machines\\VM-name\\VM-name.vmx` path in your user's `home` directory. You can also right-click on the VM to find its location.
+1. Locate the directory that has your VM's `.vmx` file. This defaults to the `Documents\Virtual Machines\VM-name\VM-name.vmx` path in your user's `home` directory. You can also right-click on the VM to find its location.
 1. Convert the `.vmx` file into an OVA archive using **ovftool** with the following command:
 	`ovftool <PATH_TO_VMX_FILE> image.ova`
 
